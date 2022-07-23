@@ -63,6 +63,7 @@ export default function Map() {
           setAddr(position);  
           mapRef.current?.panTo(position);
         }} />
+        <br />
         {!addr && <p>Enter the address of your location</p>}
         {directions && <Distance leg={directions.routes[0].legs[0]} />}
         {/* filter houses so that it displays all the houses within a certain range */}

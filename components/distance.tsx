@@ -18,8 +18,8 @@ export default function Distance({ leg }: DistanceProps) {
   return (
     <div>
       <p>
-        This home is <span className="highlight">{leg.distance.text}</span> away
-        from your office. That would take{" "}
+        This location is <span className="highlight">{leg.distance.text}</span> away
+        from your own location. That would take{" "}
         <span className="highlight">{leg.duration.text}</span> each direction.
       </p>
 

@@ -58,7 +58,7 @@ export default function Map() {
   return (
     <div className="container">
       <div className="controls">
-        <h1>Commute?</h1>
+        <h1>Current Address</h1>
         <Places setAddr={(position)=> {
           setAddr(position);  
           mapRef.current?.panTo(position);

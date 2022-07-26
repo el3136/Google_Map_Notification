@@ -10,7 +10,10 @@ import usePlacesAutocomplete, {
     ComboboxOption,
   } from "@reach/combobox";
   import "@reach/combobox/styles.css";
-  
+
+  import { ToastContainer } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
   type PlacesProps = {
     setAddr: (position: google.maps.LatLngLiteral) => void;
   };
@@ -49,6 +52,7 @@ export default function Places({ setAddr }: PlacesProps) {
           ))}  
         </ComboboxList>
       </ComboboxPopover>
+      <ToastContainer />
     </Combobox>
   )
 }

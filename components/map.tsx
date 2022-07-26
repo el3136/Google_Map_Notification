@@ -9,10 +9,15 @@ import {
 import Places from "./places";
 import Distance from "./distance";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
+
+const decidedRadius = 15000;  // meters
 
 export default function Map() {
   const [addr, setAddr] = useState<LatLngLiteral>();
@@ -25,9 +30,19 @@ export default function Map() {
   }), []);
 
   const onLoad = useCallback((map) => (mapRef.current = map), []);
+
+  const [closeMark, setCloseMark] = useState(0);
+  const countWithinRange = (distance: Array<Number>, radius: Number) => {
+    setCloseMark(distance.filter((val) => {
+      if (val <= radius) return val;
+    }).length);
+  }
   const houses = useMemo(() => {
-    // if (addr) generateHouses(addr);  // does not work without return
-    if (addr) return generateHouses(addr);
+    if (addr) {
+      let temp = generateHouses(addr);
+      countWithinRange(temp._distance, decidedRadius);
+      return temp;
+    }
   }, [addr]);
 
   const fetchDirections = (house: LatLngLiteral) => {
@@ -47,12 +62,21 @@ export default function Map() {
       }
     );
   };
-  
-  const countWithinRange = (distance: Array<Number>, radius: Number) => {
-    return distance.filter((val) => {
-      if (val <= radius) return val;
-    }).length;
+
+  const notify = () => {
+    // toast("The number of locations within a 15000m radius of the address is " + num.toString());
+    toast.info(closeMark.toString());
+    return (
+      <div>
+        <p>
+          The number of locations within a {decidedRadius}m radius of the address is <span 
+          className="highlight">{closeMark}</span>.
+        </p>
+        
+      </div>
+    );
   }
+  
   
 
   return (
@@ -62,17 +86,14 @@ export default function Map() {
         <Places setAddr={(position)=> {
           setAddr(position);  
           mapRef.current?.panTo(position);
+          // notify(); // <ToastContainer /> is returned by Places
         }} />
         <br />
         {!addr && <p>Enter the address of your location</p>}
         {directions && <Distance leg={directions.routes[0].legs[0]} />}
         {/* filter houses so that it displays all the houses within a certain range */}
         {/* Add a field to the houses that will store the distance of each position from the address */}
-        {houses && (
-          <div>
-            The number of locations within a 15000m radius of the address is {countWithinRange(houses?._distance, 15000)}.
-          </div>
-        )}
+        {houses && notify()}
       </div>
       <div className="map">
         <GoogleMap 

@@ -65,7 +65,7 @@ export default function Map() {
 
   const notify = () => {
     // toast("The number of locations within a 15000m radius of the address is " + num.toString());
-    toast.info(closeMark.toString());
+    toast.info(closeMark.toString() + " locations close by");
     return (
       <div>
         <p>
@@ -86,7 +86,8 @@ export default function Map() {
         <Places setAddr={(position)=> {
           setAddr(position);  
           mapRef.current?.panTo(position);
-          // notify(); // <ToastContainer /> is returned by Places
+          // <ToastContainer /> is returned by Places
+          // toast(closeMark);  // this returns the previous closeMark
         }} />
         <br />
         {!addr && <p>Enter the address of your location</p>}

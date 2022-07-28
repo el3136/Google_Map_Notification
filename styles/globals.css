@@ -50,3 +50,14 @@ a {
   width: 100%;
   padding: 0.5rem;
 }
+
+.locate {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: #fff;
+  border: none;
+  z-index: 10;
+  color: #14161a;
+  cursor: pointer;
+}

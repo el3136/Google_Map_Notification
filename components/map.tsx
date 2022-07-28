@@ -9,7 +9,7 @@ import {
 import Places from "./places";
 import Distance from "./distance";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -23,7 +23,7 @@ export default function Map() {
   const [addr, setAddr] = useState<LatLngLiteral>();
   const [directions, setDirections] = useState<DirectionsResult>();
   const mapRef = useRef<GoogleMap>();
-  const center = useMemo<LatLngLiteral>(() => ({ lat: 43, lng: -80 }), []);
+  const center = useMemo<LatLngLiteral>(() => ({ lat: 40, lng: -80 }), []);
   const options = useMemo<MapOptions>(() => ({
     disableDefaultUI: true,
     clickableIcons: false
@@ -76,7 +76,6 @@ export default function Map() {
       </div>
     );
   }
-  
   
 
   return (

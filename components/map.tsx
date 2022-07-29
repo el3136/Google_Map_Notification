@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import {
   GoogleMap,
   Marker,
@@ -32,18 +32,27 @@ export default function Map() {
   const onLoad = useCallback((map) => (mapRef.current = map), []);
 
   const [closeMark, setCloseMark] = useState(0);
+  const notify = () => {
+    toast(closeMark.toString() + " locations close by");
+  }
   const countWithinRange = (distance: Array<Number>, radius: Number) => {
     setCloseMark(distance.filter((val) => {
       if (val <= radius) return val;
     }).length);
+    // notify();      // also 1 step late here
   }
   const houses = useMemo(() => {
     if (addr) {
       let temp = generateHouses(addr);
       countWithinRange(temp._distance, decidedRadius);
+      // notify();    // 1 step old closeMark if called here
       return temp;
     }
   }, [addr]);
+  useEffect(() => {
+    notify();
+  }, [houses])
+  
 
   const fetchDirections = (house: LatLngLiteral) => {
     if (!addr) return;
@@ -63,19 +72,10 @@ export default function Map() {
     );
   };
 
-  const notify = () => {
-    // toast("The number of locations within a 15000m radius of the address is " + num.toString());
-    toast.info(closeMark.toString() + " locations close by");
-    return (
-      <div>
-        <p>
-          The number of locations within a {decidedRadius}m radius of the address is <span 
-          className="highlight">{closeMark}</span>.
-        </p>
-        
-      </div>
-    );
-  }
+  // const [watchID, setWatchID] = useState<number | null>(() => {
+  //   if (localStorage.getItem("watchID")) return parseInt(localStorage.getItem("watchID"));
+  //   else return null;
+  // });
   
 
   return (
@@ -87,13 +87,24 @@ export default function Map() {
           mapRef.current?.panTo(position);
           // <ToastContainer /> is returned by Places
           // toast(closeMark);  // this returns the previous closeMark
+        }}
+        setWatchID={(ID: number | null) => {
+          if (ID) localStorage.setItem("watchID", ID.toString());
+          else localStorage.clear();
         }} />
         <br />
         {!addr && <p>Enter the address of your location</p>}
         {directions && <Distance leg={directions.routes[0].legs[0]} />}
         {/* filter houses so that it displays all the houses within a certain range */}
         {/* Add a field to the houses that will store the distance of each position from the address */}
-        {houses && notify()}
+        {houses && (
+          <div>
+            <p>
+              The number of locations within a {decidedRadius}m radius of the address is <span 
+              className="highlight">{closeMark}</span>.
+            </p>
+          </div>
+        )}
       </div>
       <div className="map">
         <GoogleMap 

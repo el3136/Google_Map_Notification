@@ -51,10 +51,21 @@ a {
   padding: 0.5rem;
 }
 
-.locate {
+.geolocate {
   position: absolute;
   bottom: 1rem;
-  left: 1rem;
+  left: .5rem;
+  background: #fff;
+  border: none;
+  z-index: 10;
+  color: #14161a;
+  cursor: pointer;
+}
+
+.stop-geolocation {
+  position: absolute;
+  bottom: 3rem;
+  left: .5rem;
   background: #fff;
   border: none;
   z-index: 10;

@@ -41,17 +41,12 @@ export default function Places({ setAddr, setWatchID }: PlacesProps) {
   const handleSelect = async (val: string) => {
     setValue(val, false);
     clearSuggestions();
-    clearWatch();
+    clearWatch();       // stop geolocation tracker
 
     const results = await getGeocode({address: val});
     const {lat, lng} = await getLatLng(results[0]);
     setAddr({lat, lng});
-
-    // TODO: stop geolocation
-    // if (watchId) navigator.geolocation.clearWatch(watchId);
   }
-
-  // var watchID: number | null = useMemo(() => null, []);
 
   const updateLocation = () => {
     if (localStorage.getItem("watchID")) {
@@ -70,7 +65,6 @@ export default function Places({ setAddr, setWatchID }: PlacesProps) {
         (position) => {
           console.log(position);
           const { latitude, longitude } = position.coords;
-          // Show a map centered at latitude / longitude.
           setAddr({lat: latitude, lng: longitude});
         }, 
         () => null
@@ -88,8 +82,6 @@ export default function Places({ setAddr, setWatchID }: PlacesProps) {
 
     toast.info("Stopped keeping track of realtime location")
   }
-
-  // PositionOptions { maximumAge: 60_000 } makes the program wait 1 minute before caching a new position
   
   return (
     <>
@@ -102,15 +94,6 @@ export default function Places({ setAddr, setWatchID }: PlacesProps) {
       <button
         className="geolocate"
         onClick={() => {
-          // navigator.geolocation.getCurrentPosition(
-          //   (position) => {
-          //     setAddr({
-          //       lat: position.coords.latitude,
-          //       lng: position.coords.longitude,
-          //     });
-          //   },
-          //   () => null,
-          // );
           updateLocation();
         }}
       >

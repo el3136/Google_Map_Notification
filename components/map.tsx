@@ -39,13 +39,11 @@ export default function Map() {
     setCloseMark(distance.filter((val) => {
       if (val <= radius) return val;
     }).length);
-    // notify();      // also 1 step late here
   }
   const houses = useMemo(() => {
     if (addr) {
       let temp = generateHouses(addr);
       countWithinRange(temp._distance, decidedRadius);
-      // notify();    // 1 step old closeMark if called here
       return temp;
     }
   }, [addr]);
@@ -72,12 +70,6 @@ export default function Map() {
     );
   };
 
-  // const [watchID, setWatchID] = useState<number | null>(() => {
-  //   if (localStorage.getItem("watchID")) return parseInt(localStorage.getItem("watchID"));
-  //   else return null;
-  // });
-  
-
   return (
     <div className="container">
       <div className="controls">
@@ -95,8 +87,6 @@ export default function Map() {
         <br />
         {!addr && <p>Enter the address of your location</p>}
         {directions && <Distance leg={directions.routes[0].legs[0]} />}
-        {/* filter houses so that it displays all the houses within a certain range */}
-        {/* Add a field to the houses that will store the distance of each position from the address */}
         {houses && (
           <div>
             <p>

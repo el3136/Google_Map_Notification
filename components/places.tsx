@@ -19,16 +19,7 @@ type PlacesProps = {
   setAddr: (position: google.maps.LatLngLiteral) => void;
   setWatchID: (ID: number | null) => void
 };
-// interface Props {
-//   setAddr: (position: google.maps.LatLngLiteral) => void
-//   watchID: number | null
-//   setWatchID: (ID: number | null) => void
-// }
 
-// var watchID: number | null = null;
-// use localStorage to save watchID, and use useEffect to check each time the page is refreshed 
-
-// export default function Places({ setAddr }: PlacesProps, { watchID }: ID, { setWatchID }: setID) {
 export default function Places({ setAddr, setWatchID }: PlacesProps) {
   const {
     ready, 
